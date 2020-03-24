@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<npcs>
+  <npc id="1">
+    <name>卫春华</name>
+    <position>Positon</position>
+    <task>Task01</task>
+    <message>Message01</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="2">
+    <name>大痴</name>
+    <position>Positon</position>
+    <task>Task02</task>
+    <message>Message02</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="3">
+    <name>马善均</name>
+    <position>Positon</position>
+    <task>Task03</task>
+    <message>Message03</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="4">
+    <name>于万婷</name>
+    <position>Positon</position>
+    <task>Task04</task>
+    <message>Message04</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="5">
+    <name>马静霞</name>
+    <position>Positon</position>
+    <task>Task05</task>
+    <message>Message05</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="6">
+    <name>天静</name>
+    <position>Positon</position>
+    <task>Task06</task>
+    <message>Message06</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="7">
+    <name>方有德</name>
+    <position>Positon</position>
+    <task>Task07</task>
+    <message>Message07</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="8">
+    <name>孙大善</name>
+    <position>Positon</position>
+    <task>Task08</task>
+    <message>Message08</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="9">
+    <name>关明梅</name>
+    <position>Positon</position>
+    <task>Task09</task>
+    <message>Message09</message>
+    <resPath>Asset/</resPath>
+  </npc>
+  <npc id="10">
+    <name>吴国栋</name>
+    <position>Positon</position>
+    <task>Task10</task>
+    <message>Message10</message>
+    <resPath>Asset/</resPath>
+  </npc>
+</npcs>

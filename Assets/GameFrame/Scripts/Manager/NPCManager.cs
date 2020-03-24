@@ -9,9 +9,20 @@ public class NPCManager : Singleton<NPCManager>
 
     private List<BaseNPC> npcs = new List<BaseNPC>();
 
+    private int index = 0;
+
     public BaseNPC GetNPC(int id)
     {
         return npcs.Find((BaseNPC n) => { return n.id == id; });
+    }
+
+    public BaseNPC NextNPC()
+    {
+        if (index < npcs.Count)
+        {
+            return npcs[index++];
+        }
+        return null;
     }
 
     public override void OnSingletonInit()

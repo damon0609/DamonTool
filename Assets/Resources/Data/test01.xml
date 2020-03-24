@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root root="root">
+  <npc name="npc1">
+    <position>(1,2,3)</position>
+    <name>灵异神</name>
+    <任务>击杀7个毛猴</任务>
+    <对话内容>{'你好1','你好2'}</对话内容>
+  </npc>
+  <npc name="npc2">
+    <position>(1,3,4)</position>
+    <name>武当掌门</name>
+  </npc>
+  <npc name="npc3" />
+  <npc name="npc4" />
+  <npc name="npc5" />
+</root>

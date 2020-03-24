@@ -2,26 +2,66 @@
 using System.Xml;
 using System.IO;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 public class XMLHelpler
 {
     private XmlDocument xmlDocument;
     private string mPath;
-    public XMLHelpler(string path, string root)
+    private XmlElement mRootNode;
+    public XmlElement rootNode
     {
-        if (!Directory.Exists(path))
-            File.Create(path).Dispose();
-
-        this.mPath = path;
-
-        xmlDocument = new XmlDocument();
-        XmlDeclaration declaration = xmlDocument.CreateXmlDeclaration("1.0", "utf-8", null);
-        xmlDocument.AppendChild(declaration);
-
-        XmlElement rootNode = xmlDocument.CreateElement(root);
-        xmlDocument.AppendChild(rootNode);
-        xmlDocument.Save(path);
+        get { return mRootNode; }
+        set { mRootNode = value; }
     }
 
+    private string mRootName;
+    public string rootName
+    {
+        get { return mRootName; }
+        set { mRootName = value; }
+    }
+
+    public XMLHelpler(string path, string root)
+    {
+        this.mPath = path;
+        mRootName = root;
+        Init();
+    }
+    public XMLHelpler()
+    {
+
+    }
+    public void CreateXML(string path)
+    {
+        this.mPath = path;
+        Init();
+    }
+
+    void Init()
+    {
+        xmlDocument = new XmlDocument();
+        if (!File.Exists(mPath))
+        {
+            File.Create(mPath).Dispose();
+
+            XmlDeclaration declaration = xmlDocument.CreateXmlDeclaration("1.0", "utf-8", null);
+            xmlDocument.AppendChild(declaration);
+            if (mRootName == string.Empty || mRootName == null)
+            {
+                Debug.Log("根节点未赋值");
+                return;
+            }
+            mRootNode = xmlDocument.CreateElement(mRootName);
+            xmlDocument.AppendChild(rootNode);
+        }
+        else
+        {
+            xmlDocument.Load(mPath);
+            mRootName = xmlDocument.DocumentElement.Name;
+            mRootNode = (XmlElement)xmlDocument.SelectSingleNode(mRootName);
+        }
+    }
 
     public XmlNode SelectedNodeByAttribute(string nodeName, string attributeName)
     {
@@ -56,11 +96,16 @@ public class XMLHelpler
 
     public XmlElement AddRootClidNode(string name)
     {
-        XmlNode root = xmlDocument.DocumentElement.FirstChild;
-        Debug.Log(xmlDocument.DocumentElement.FirstChild.Name);
-        //XmlElement en = xmlDocument.CreateElement(name);
-        //root.AppendChild(en);
-        return null;
+        XmlElement en = xmlDocument.CreateElement(name);
+        rootNode.AppendChild(en);
+        return en;
+    }
+
+    public XmlElement CreateElement(string name, string value)
+    {
+        XmlElement en = xmlDocument.CreateElement(name);
+        en.InnerText = value;
+        return en;
     }
 
     public void AddChildNodeByAttribute(string nodeName, string attributeName, string name, string value)
@@ -81,4 +126,6 @@ public class XMLHelpler
     {
         xmlDocument.Save(mPath);
     }
+
+
 }
