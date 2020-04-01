@@ -1,12 +1,12 @@
 ﻿using System;
 
 
-public abstract class BaseObj : System.Object
+public abstract class TableItem : System.Object
 {
 
 }
 
-public class NPCItem : BaseObj
+public class NPCItem : TableItem
 {
     public int id;
     public string name;
@@ -21,12 +21,12 @@ public class NPCItem : BaseObj
     }
 }
 
-public class MonsterItem : BaseObj
+public class MonsterItem : TableItem
 {
 
 }
 
-public class Item : BaseObj
+public class Item : TableItem
 {
 
 }

@@ -4,37 +4,29 @@ using UnityEngine;
 
 namespace Damon.Table
 {
-    public abstract class BaseTable
+    public class BaseTable
     {
         protected string mName;
         public string name { get { return mName; } }
 
-        protected List<BaseObj> items = new List<BaseObj>();
+        protected List<TableItem> items = new List<TableItem>();
+        public bool isActive = false;
+        public int index;
 
-        public BaseTable(string name)
+        private string mPath;
+        public BaseTable(string name, string path)
         {
             this.mName = name;
-            InitData();
-            InitView();
+            this.mPath = path;
         }
 
-        protected virtual void InitData()
+        public virtual void InitData()
         {
-
+            if (!isActive) return;
+            Debug.Log(mName + "----" + mPath);
         }
 
         public virtual void Close()
-        {
-            Debug.Log("close " + mName);
-        }
-
-        protected abstract void InitView();
-
-        protected abstract void Clear();
-
-        public abstract void ItemChange();
-
-        public virtual void UpdateView()
         {
 
         }
