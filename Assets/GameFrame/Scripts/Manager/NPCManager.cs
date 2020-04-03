@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Damon.Tool;
 public class NPCManager : Singleton<NPCManager>
 {
     protected NPCManager() { }

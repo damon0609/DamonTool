@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
-
+using Damon.Tool;
 public class TestSingleton : MonoBehaviour
 {
     Dictionary<string, Dictionary<string, string>> GetTableData()

@@ -1,32 +1,16 @@
 ﻿using System;
 
-
-public abstract class TableItem : System.Object
-{
-
-}
-
-public class NPCItem : TableItem
-{
+public class TableItem : System.Object {
     public int id;
     public string name;
-    public string pos;
-    public string task;
-    public string message;
-    public string resPath;
+
+    public int account;
+
+    public float price;
+    public string data;
 
     public override string ToString()
     {
-        return string.Format("id = {0},name = {1},pos = {2},task = {3},message = {4},resPath = {5}", id, name, pos, task, message, resPath);
+        return string.Format("id={0};name={1},account={2},price={3},data={4}",id,name,account,price,data);
     }
-}
-
-public class MonsterItem : TableItem
-{
-
-}
-
-public class Item : TableItem
-{
-
 }

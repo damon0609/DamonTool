@@ -1,9 +1,7 @@
 ﻿using System;
 using UnityEngine;
-public class ResourceManager : Singleton<ResourceManager>
-{
-    public enum ResourceType
-    {
+public class ResourceManager : Singleton<ResourceManager> {
+    public enum ResourceType {
         Undifine,
         Data,
         Monster,
@@ -18,14 +16,16 @@ public class ResourceManager : Singleton<ResourceManager>
     public const string SCENE = "Scene/";
     public const string UI = "UI/";
 
-
     #region 加载Resources中资源
-    public T LoadRes<T>(ResourceType type, string name) where T : UnityEngine.Object
-    {
-        T t = default(T);
+
+    public T LoadRes<T> (string name) where T : UnityEngine.Object {
+        return LoadRes<T> (ResourceType.Undifine, name);
+    }
+
+    public T LoadRes<T> (ResourceType type, string name) where T : UnityEngine.Object {
+        T t = default (T);
         string path = string.Empty;
-        switch (type)
-        {
+        switch (type) {
             case ResourceType.Data:
                 path += DATA + name;
                 break;
@@ -41,20 +41,21 @@ public class ResourceManager : Singleton<ResourceManager>
             case ResourceType.UI:
                 path += UI + name;
                 break;
+            case ResourceType.Undifine:
+                path = name;
+                break;
         }
-        t = Resources.Load<T>(path);
+        t = Resources.Load<T> (path);
         return t;
     }
 
     #endregion
 
     #region 加载AssetBundle
-    public T LoadAssetBundle<T>(ResourceType resType, string name) where T : UnityEngine.Object
-    {
-        T t = default(T);
+    public T LoadAssetBundle<T> (ResourceType resType, string name) where T : UnityEngine.Object {
+        T t = default (T);
         string path = Application.streamingAssetsPath + "/";
-        switch (resType)
-        {
+        switch (resType) {
             case ResourceType.Data:
                 path += DATA + name;
                 break;
@@ -72,27 +73,23 @@ public class ResourceManager : Singleton<ResourceManager>
                 break;
         }
 
-        AssetBundleManager.Instance.Load<T>(path);
+        AssetBundleManager.Instance.Load<T> (path);
 
         return t;
     }
 
-
-    public void AsyncLoadAssetBundle<T>(ResourceType resType, string name, Action action) where T : UnityEngine.Object
-    {
+    public void AsyncLoadAssetBundle<T> (ResourceType resType, string name, Action action) where T : UnityEngine.Object {
 
     }
 
     #endregion
-    protected ResourceManager() { }
+    protected ResourceManager () { }
 
-    public override void Dispose()
-    {
-        base.Dispose();
+    public override void Dispose () {
+        base.Dispose ();
     }
 
-    public override void OnSingletonInit()
-    {
-        base.OnSingletonInit();
+    public override void OnSingletonInit () {
+        base.OnSingletonInit ();
     }
 }

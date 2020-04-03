@@ -1,7 +1,7 @@
 id,name,resPath
-0,居家生活,Assets/
-1,服饰鞋包,Assets/
-2,美食酒水,Assets/
-3,个护清洁,Assets/
-4,母婴亲子,Assets/
-5,旅行运动,Assets/
+0,居家生活,table01
+1,服饰鞋包,table02
+2,美食酒水,table03
+3,个护清洁,table04
+4,母婴亲子,table05
+5,旅行运动,table06

@@ -1,42 +1,84 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Damon.Table;
+using Damon.Tool;
 using UnityEngine;
 using UnityEngine.UI;
 public interface IDataSet { }
 
-public class TableMenu : MonoBehaviour {
+public class TableMenu : MonoBehaviour, ILog {
     public GameObject prefab;
     private List<GameObject> list = new List<GameObject> ();
     private TableFactory tableFactory;
+
+    [SerializeField]
     private int index = 0;
+    [SerializeField]
+    private int subIndex = 0;
+
+    public GameObject tableMenu;
+    public GameObject tableItem;
     void Start () {
         tableFactory = TableFactory.Instance;
-        InitView (tableFactory);
+        InitView ();
     }
     //数据模块填充数据
-    void InitView (IDataSet dataSet) {
-        TableFactory mDataSet = dataSet as TableFactory;
-        for (int i = 0; i < mDataSet.count; i++) {
-            GameObject go = GameObject.Instantiate<GameObject> (prefab);
-            go.transform.SetParent (this.transform);
+    void InitView () {
 
-            BaseTable table = mDataSet[i];
-            go.GetComponentInChildren<Text>().text = table.name;
-            go.AddComponent<Index>().index = i;
-
-            go.GetComponent<Button>().onClick.AddListener(()=>{
-                int mIndex = go.GetComponent<Index>().index;
-                TableFactory.dispatcher.Trigger("MenuSelected",mIndex);
-            });
-            list.Add(go);
-        }
+        //初始化父表 
+        List<GameObject> list = GameObjectTool.GenerateGos (prefab, tableFactory.count, tableMenu);
+        GameObjectTool.SetPositionHorizontal (list, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
         for (int i = 0; i < list.Count; i++) {
-            GameObject go = list[i];
-            go.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (110 * i + 10, 0, 0);
+            GameObject temp = list[i];
+            temp.GetComponentInChildren<Text> ().text = tableFactory[i].name;
+            temp.AddComponent<Index> ().index = i;
+            temp.GetComponent<Button> ().onClick.AddListener (() => {
+                int selectedIndex = temp.GetComponent<Index> ().index;
+                if (selectedIndex == index) return;
+                ResetSelected (0);
+                this.index = temp.GetComponent<Index> ().index;
+                SetSelected (0);
+            });
         }
-        mDataSet[index].InitData();
+
+        // 初始化子表
+        BaseTable table01 = tableFactory[index];
+        table01.InitData ();
+        List<GameObject> childList = GameObjectTool.GenerateGos (prefab, table01.count, tableItem);
+        GameObjectTool.SetPositionHorizontal (childList, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
+        for (int i = 0; i < childList.Count; i++) {
+            GameObject temp = childList[i];
+            temp.GetComponentInChildren<Text> ().text = table01[i].name;
+            temp.AddComponent<Index> ().index = i;
+            temp.GetComponent<Button> ().onClick.AddListener (() => {
+                int selectedIndex = temp.GetComponent<Index> ().index;
+                if (selectedIndex == subIndex) return;
+                ResetSelected (1);
+                this.subIndex = temp.GetComponent<Index> ().index;
+                SetSelected (1);
+            });
+
+        }
+        list[index].Disable<Button> ();
+        childList[subIndex].Disable<Button> ();
     }
-    void Update () {
+
+    void SetSelected (int type) {
+        if (type == 0) {
+            this.d ("damon", "父对象 选中" + index, false);
+            BaseTable table01 = tableFactory[index];
+            table01.InitData ();
+        } else if (type == 1) {
+            this.d ("damon", "子对象对象 选中" + subIndex, false);
+        }
     }
+    void ResetSelected (int type) {
+        if (type == 0) {
+            this.d ("damon", "父对象 重置选中" + index, false);
+        } else if (type == 1) {
+            this.d ("damon", "子对象对象 重置选中" + subIndex, false);
+        }
+    }
+
+    void Update () { }
 }

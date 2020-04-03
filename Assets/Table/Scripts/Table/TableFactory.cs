@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Boo.Lang.Runtime.DynamicDispatching;
 using Damon.Tool.Events;
 using UnityEngine;
-
+using Damon.Tool;
 namespace Damon.Table
 {
     public class TableFactory : Singleton<TableFactory>, IDataSet
