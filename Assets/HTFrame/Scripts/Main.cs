@@ -1,29 +1,25 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 [DisallowMultipleComponent]
-[DefaultExecutionOrder(-1000)]
-public sealed partial class Main : MonoBehaviour
-{
+[DefaultExecutionOrder (-1000)]
+public sealed partial class Main : MonoBehaviour {
 
     public static Main instance;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
+    private void Awake () {
+        DontDestroyOnLoad (gameObject);
         instance = this;
-        InitModule();
+        InitModule ();
     }
 
-    void Start()
-    {
-        PreparatoryModule();
+    void Start () {
+        PreparatoryModule ();
     }
 
-    void Update()
-    {
-        ModuleUpdate();
+    void Update () {
+        ModuleUpdate ();
     }
 }

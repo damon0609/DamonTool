@@ -1,18 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
-using UnityEngine;
 using Damon.Tool;
-public class TestSingleton : MonoBehaviour
-{
-    Dictionary<string, Dictionary<string, string>> GetTableData()
-    {
-        TextAsset text = ResourceManager.Instance.LoadRes<TextAsset>(ResourceManager.ResourceType.Data, "npc");
-        return CSVTool.Parse(text.text);
+using UnityEngine;
+public class TestSingleton : MonoBehaviour {
+    Dictionary<string, Dictionary<string, string>> GetTableData () {
+        TextAsset text = ResourceManager.Instance.LoadRes<TextAsset> (ResourceManager.ResourceType.Data, "npc");
+        return CSVTool.Parse (text.text);
 
     }
-    void Start()
-    {
+    void Start () {
         //Dictionary<string, Dictionary<string, string>> dic = GetTableData();
         //string path = Application.dataPath + "/GameFrame/Res/Data/";
         //XMLHelpler xmlHelper = new XMLHelpler(path + "npc.xml", "npcs");
@@ -31,18 +28,16 @@ public class TestSingleton : MonoBehaviour
         //xmlHelper.Save();
 
         string path = Application.dataPath + "/GameFrame/Res/Data/";
-        XMLHelpler xmlHelper = new XMLHelpler();
-        xmlHelper.CreateXML(path + "npc.xml");
+        XMLHelpler xmlHelper = new XMLHelpler ();
+        xmlHelper.CreateXML (path + "npc.xml");
         XmlNodeList list = xmlHelper.rootNode.ChildNodes;
-        foreach (XmlNode node in list)
-        {
-            Debug.Log(node.Name);
+        foreach (XmlNode node in list) {
+            Debug.Log (node.Name);
         }
-        xmlHelper.Save();
+        xmlHelper.Save ();
     }
 
-    void Update()
-    {
+    void Update () {
 
     }
 }

@@ -1,16 +1,13 @@
-﻿using Damon.Tool;
 using System.Collections;
 using System.Collections.Generic;
+using Damon.Tool;
 using UnityEngine;
 
-public class TestGizmos : MonoBehaviour,IGizmos
-{
+public class TestGizmos : MonoBehaviour, IGizmos {
     [SerializeField]
     private bool mIsShow;
-    public bool isShow
-    {
-        set
-        {
+    public bool isShow {
+        set {
             mIsShow = value;
         }
     }
@@ -19,28 +16,23 @@ public class TestGizmos : MonoBehaviour,IGizmos
     private Color mColor;
     public Color color { set { mColor = value; } }
 
-    public void OnDrawGizmosItem()
-    {
-        if (!mIsShow||!GizmosManager.isShowGizmos) return;
+    public void OnDrawGizmosItem () {
+        if (!mIsShow || !GizmosManager.isShowGizmos) return;
         Gizmos.color = mColor;
-        GizmosTool.DrawSphere(mCacheTrans.position, 0.2f);
+        GizmosTool.OnDrawSphere (mCacheTrans.position, 0.2f);
     }
 
     private Transform mCacheTrans;
 
-    void Awake()
-    {
+    void Awake () {
         mCacheTrans = transform;
     }
 
-    void Start()
-    {
-        GizmosManager.AddGizmos(this);
+    void Start () {
+        GizmosManager.AddGizmos (this);
     }
 
+    void Update () {
 
-    void Update()
-    {
-        
     }
 }

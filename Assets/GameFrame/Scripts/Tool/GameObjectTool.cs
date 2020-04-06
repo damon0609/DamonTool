@@ -8,12 +8,25 @@ namespace Damon.Tool {
     }
     public static class GameObjectTool {
 
+        public static RectTransform NewUIGameObject(string name,GameObject parent = null)
+        {
+            GameObject go = new GameObject(name);
+            RectTransform rect = go.AddComponent<RectTransform>();
+            if(parent!=null)
+            {
+                go.transform.parent = parent.transform;
+            }
+            rect.localScale = Vector3.one;
+            rect.anchoredPosition3D = Vector3.zero;
+            return rect;
+        }
+
         public static GameObject Disable<T> (this GameObject go) where T : MonoBehaviour {
             go.GetComponent<T> ().enabled = false;
             return go;
         }
 
-         public static GameObject Enable<T> (this GameObject go) where T : MonoBehaviour {
+        public static GameObject Enable<T> (this GameObject go) where T : MonoBehaviour {
             go.GetComponent<T> ().enabled = true;
             return go;
         }

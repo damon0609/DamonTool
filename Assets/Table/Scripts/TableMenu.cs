@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Damon.Table;
 using Damon.Tool;
@@ -18,6 +18,9 @@ public class TableMenu : MonoBehaviour, ILog {
 
     public GameObject tableMenu;
     public GameObject tableItem;
+
+    private List<GameObject> menuList;
+    private List<GameObject> itemList;
     void Start () {
         tableFactory = TableFactory.Instance;
         InitView ();
@@ -26,10 +29,10 @@ public class TableMenu : MonoBehaviour, ILog {
     void InitView () {
 
         //初始化父表 
-        List<GameObject> list = GameObjectTool.GenerateGos (prefab, tableFactory.count, tableMenu);
-        GameObjectTool.SetPositionHorizontal (list, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
-        for (int i = 0; i < list.Count; i++) {
-            GameObject temp = list[i];
+        menuList = GameObjectTool.GenerateGos (prefab, tableFactory.count, tableMenu);
+        GameObjectTool.SetPositionHorizontal (menuList, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
+        for (int i = 0; i < menuList.Count; i++) {
+            GameObject temp = menuList[i];
             temp.GetComponentInChildren<Text> ().text = tableFactory[i].name;
             temp.AddComponent<Index> ().index = i;
             temp.GetComponent<Button> ().onClick.AddListener (() => {
@@ -42,13 +45,44 @@ public class TableMenu : MonoBehaviour, ILog {
         }
 
         // 初始化子表
-        BaseTable table01 = tableFactory[index];
-        table01.InitData ();
-        List<GameObject> childList = GameObjectTool.GenerateGos (prefab, table01.count, tableItem);
-        GameObjectTool.SetPositionHorizontal (childList, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
-        for (int i = 0; i < childList.Count; i++) {
-            GameObject temp = childList[i];
-            temp.GetComponentInChildren<Text> ().text = table01[i].name;
+        BaseTable table = tableFactory[index];
+        table.InitData ();
+        SetMenuItem (table);
+        menuList[index].Disable<Button> ();
+        itemList[subIndex].Disable<Button> ();
+    }
+
+    void SetSelected (int type) {
+        if (type == 0) {
+            this.d ("damon", "父对象 选中" + index, false);
+            menuList[index].Disable<Button> ();
+            BaseTable table = tableFactory[index];
+            table.InitData ();
+            SetMenuItem (table);
+        } else if (type == 1) {
+            this.d ("damon", "子对象对象 选中" + subIndex, false);
+            itemList[subIndex].Disable<Button> ();
+        }
+    }
+    void ResetSelected (int type) {
+        if (type == 0) {
+            menuList[index].Enable<Button> ();
+            for (int i = 0; i < itemList.Count; i++) {
+                itemList[i].DestroySelf ();
+            }
+            this.d ("damon", "父对象 重置选中" + index, false);
+        } else if (type == 1) {
+            itemList[subIndex].Enable<Button> ();
+            this.d ("damon", "子对象对象 重置选中" + subIndex, false);
+        }
+    }
+
+    void SetMenuItem (BaseTable table) {
+        itemList = GameObjectTool.GenerateGos (prefab, table.count, tableItem);
+        GameObjectTool.SetPositionHorizontal (itemList, Vector3.zero, new Vector3 (110, 0, 0), ComponentType.RectTransform);
+        for (int i = 0; i < itemList.Count; i++) {
+            GameObject temp = itemList[i];
+            temp.GetComponentInChildren<Text> ().text = table[i].name;
             temp.AddComponent<Index> ().index = i;
             temp.GetComponent<Button> ().onClick.AddListener (() => {
                 int selectedIndex = temp.GetComponent<Index> ().index;
@@ -57,28 +91,7 @@ public class TableMenu : MonoBehaviour, ILog {
                 this.subIndex = temp.GetComponent<Index> ().index;
                 SetSelected (1);
             });
-
-        }
-        list[index].Disable<Button> ();
-        childList[subIndex].Disable<Button> ();
-    }
-
-    void SetSelected (int type) {
-        if (type == 0) {
-            this.d ("damon", "父对象 选中" + index, false);
-            BaseTable table01 = tableFactory[index];
-            table01.InitData ();
-        } else if (type == 1) {
-            this.d ("damon", "子对象对象 选中" + subIndex, false);
         }
     }
-    void ResetSelected (int type) {
-        if (type == 0) {
-            this.d ("damon", "父对象 重置选中" + index, false);
-        } else if (type == 1) {
-            this.d ("damon", "子对象对象 重置选中" + subIndex, false);
-        }
-    }
-
     void Update () { }
 }

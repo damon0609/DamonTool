@@ -1,12 +1,9 @@
-﻿using System;
+using System;
 using UnityEditor;
 using UnityEngine;
-public class AssetBundleHelper : EditorWindow
-{
+public class AssetBundleHelper : EditorWindow {
 
-
-    public void OnGUI()
-    {
+    public void OnGUI () {
 
     }
 }

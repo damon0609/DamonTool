@@ -1,10 +1,8 @@
-﻿using System;
-namespace Damon.FSM
-{
-    public interface IState
-    {
-        void Enter();
-        void Update();
-        void Exit();
+using System;
+namespace Damon.FSM {
+    public interface IState {
+        void Enter ();
+        void Update ();
+        void Exit ();
     }
 }
