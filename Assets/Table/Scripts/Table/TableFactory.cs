@@ -5,8 +5,7 @@ using Damon.Tool;
 using Damon.Tool.Events;
 using UnityEngine;
 namespace Damon.Table {
-    public class TableFactory : Singleton<TableFactory>, IDataSet {
-        public static EventDispatcher dispatcher = new EventDispatcher ();
+    public class TableFactory : Singleton<TableFactory> {
         private Dictionary<int, BaseTable> mDic = new Dictionary<int, BaseTable> ();
         private BaseTable mCurTable;
         public BaseTable curTable {

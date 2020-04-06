@@ -1,26 +1,54 @@
+using System;
 using System.Collections.Generic;
+using Damon.Tool.Pool;
 using UnityEngine;
+using UnityEngine.UI;
 namespace Damon.Tool {
 
+    public class UtilityTool {
+        public static void ApplyLoop<T> (IList<T> list, Action<T> action) where T:UnityEngine.Object {
+            for (int i = 0; i < list.Count; i++) {
+                if (action != null)
+                    action (list[i]);
+            }
+        }
+        public static void ApplyLoop(int count,Action action)
+        {
+             for (int i = 0; i < count; i++) {
+                if (action != null)
+                    action ();
+            }
+        }
+    }
     public enum ComponentType {
         RectTransform,
         Transform,
     }
     public static class GameObjectTool {
 
-        public static RectTransform NewUIGameObject(string name,GameObject parent = null)
-        {
-            GameObject go = new GameObject(name);
-            RectTransform rect = go.AddComponent<RectTransform>();
-            if(parent!=null)
-            {
-                go.transform.parent = parent.transform;
-            }
-            rect.localScale = Vector3.one;
-            rect.anchoredPosition3D = Vector3.zero;
-            return rect;
+        public static RectTransform NewUIGameObject (string name, GameObject parent = null) {
+            SimpleObjectPool<GameObject> simpleObjectPool = new SimpleObjectPool<GameObject> (
+                () => {
+                    GameObject clone = new GameObject (name);
+                    RectTransform rect = clone.OnAddComponent<RectTransform> ();
+                    rect.localScale = Vector3.one;
+                    rect.anchoredPosition3D = Vector3.zero;
+                    if (parent != null) {
+                        clone.transform.parent = parent.transform;
+                    }
+                    return clone;
+                },
+                (GameObject g) => {
+                    Debug.Log (g.name);
+                    g.transform.parent = null;
+                    g.GetComponent<RectTransform> ().anchoredPosition = Vector3.zero;
+                    g.SetActive (false);
+                },
+                1);
+            //从对象池中获取对象
+            GameObject go = simpleObjectPool.Allocate ();
+            return go.GetComponent<RectTransform> ();
         }
-
         public static GameObject Disable<T> (this GameObject go) where T : MonoBehaviour {
             go.GetComponent<T> ().enabled = false;
             return go;
