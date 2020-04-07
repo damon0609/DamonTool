@@ -1,8 +1,40 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
+
+namespace Damon {
+    #region 无返回值委托
+    public delegate void DAction ();
+    public delegate void DAction<in T> (T t1);
+    public delegate void DAction<in T1, in T2> (T1 t1, T2 t2);
+    public delegate void DAction<in T1, in T2, in T3> (T1 t1, T2 t2, T3 t3);
+    #endregion
+
+    #region 有返回值委托
+    public delegate TResult DFunc<out TResult> ();
+    public delegate TResult DFunc<in T1, out TResult> (T1 t1);
+    public delegate TResult DFunc<in T1, in T2, out TResult> (T1 t1, T2 t2);
+    public delegate TResult DFunc<in T1, in T2, in T3, out TResult> (T1 t1, T2 t2, T3 t3);
+    #endregion
+
+    public class ReflectionTool {
+        public static List<Type> GetAssembleType () {
+            Assembly[] assemblies = GetAllAssembles ();
+            foreach (Assembly e in assemblies) {
+                Debug.Log(e.FullName+"--");
+                // Type[] teyps = e.GetTypes ();
+            }
+            return null;
+        }
+
+        public static Assembly[] GetAllAssembles () {
+            return AppDomain.CurrentDomain.GetAssemblies ();
+        }
+    }
+}
 
 public static class GlobalTool {
     private static readonly HashSet<string> RunTimeAssemblies = new HashSet<string> () {

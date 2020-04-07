@@ -1,22 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Damon;
 using LitJson;
-public class ZTestHT : MonoBehaviour
-{
-    void Start()
-    {
-        JsonData npc = new JsonData();
-        npc["name"]="npc1";
+using UnityEngine;
+public class ZTestHT : MonoBehaviour {
 
+    private Entity entity;
 
-        BaseDateSet set = Main.dateManager.CreateDateSet(typeof(NPCDate),npc);
-        JsonData data= set.Pack();
+    void Start () {
 
+        entity = new Entity ();
     }
 
-    void Update()
-    {
-        
+    void Update () {
+
     }
 }
