@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Damon.Tool;
 using UnityEngine;
+using Damon.Tool;
 namespace PUI {
-    public class PUIRoot : PUINode {
+    public class PUIRoot : MonoBehaviour,ILog {
 
         [SerializeField]
         private float mDistance = 1;

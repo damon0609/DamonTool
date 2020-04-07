@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LitJson;
 using UnityEngine;
 
+
 public class NPCDate : BaseDateSet {
     public string name;
     public int id;

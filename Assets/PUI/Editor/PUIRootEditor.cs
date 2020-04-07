@@ -19,6 +19,8 @@ namespace PUI {
         public override void OnInspectorGUI () {
 
             EditorGUILayout.Space ();
+
+            EditorGUILayout.BeginVertical();
             t.distance = EditorGUILayout.Slider ("Distance", t.distance,1,7);
             t.height = EditorGUILayout.FloatField ("Height", t.height);
 
@@ -30,6 +32,10 @@ namespace PUI {
             if (mRectTransform.anchoredPosition3D.y != t.height) {
                 mRectTransform.anchoredPosition3D = new Vector3 (0, t.height, t.height);
             }
+
+            
+
+            EditorGUILayout.EndVertical();
         }
     }
 }

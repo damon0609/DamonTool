@@ -28,11 +28,9 @@ public abstract class HTBaseEditor<T> : Editor where T : UnityEngine.Object {
             Undo.RecordObject (target, "Click Button");
         }
     }
-
     protected T ObjectField<T> (string name, T t, bool allowMutil = false, params GUILayoutOption[] option) where T : UnityEngine.Object {
         return EditorGUILayout.ObjectField (name, t, typeof (T), allowMutil, option) as T;
     }
-
     protected void Button (Action action, string name, GUIStyle style, GUILayoutOption option) {
         if (GUILayout.Button (name, style, option)) {
             if (action != null)

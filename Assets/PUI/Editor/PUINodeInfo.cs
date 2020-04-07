@@ -26,7 +26,7 @@ namespace PUI {
         public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
 
             EditorGUILayout.BeginHorizontal ();
-            GUIStyle style = EditorStyles.foldoutHeader;
+            GUIStyle style = EditorStyles.foldout;
             style.margin = new RectOffset (20, 5, 2, 2);
             style.fixedWidth = position.width;
             style.fontStyle = FontStyle.Bold;
