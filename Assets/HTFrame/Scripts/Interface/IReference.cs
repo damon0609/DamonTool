@@ -1,3 +1,4 @@
-    public interface IReference {
-        void Reset ();
-    }
+using Damon.Tool;
+public interface IReference: ILog {
+    void Reset ();
+}

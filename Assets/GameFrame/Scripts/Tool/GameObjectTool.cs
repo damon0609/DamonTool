@@ -6,15 +6,14 @@ using UnityEngine.UI;
 namespace Damon.Tool {
 
     public class UtilityTool {
-        public static void ApplyLoop<T> (IList<T> list, Action<T> action) where T:UnityEngine.Object {
+        public static void ApplyLoop<T> (IList<T> list, Action<T> action) where T : UnityEngine.Object {
             for (int i = 0; i < list.Count; i++) {
                 if (action != null)
                     action (list[i]);
             }
         }
-        public static void ApplyLoop(int count,Action action)
-        {
-             for (int i = 0; i < count; i++) {
+        public static void ApplyLoop (int count, Action action) {
+            for (int i = 0; i < count; i++) {
                 if (action != null)
                     action ();
             }
@@ -25,6 +24,33 @@ namespace Damon.Tool {
         Transform,
     }
     public static class GameObjectTool {
+        public static void RecycleGameobject () {
+
+        }
+        //这里的对象池无法回收
+        public static GameObject NewGameObject (string name, GameObject parent = null) {
+            SimpleObjectPool<GameObject> simpleObjectPool = new SimpleObjectPool<GameObject> (
+                () => {
+                    GameObject clone = new GameObject (name);
+                    if (parent != null) {
+                        clone.transform.parent = parent.transform;
+                        clone.transform.position = Vector3.zero;
+                        clone.transform.localScale = Vector3.one;
+                        //Debug.Log ("GameObjectTool:" + clone.name + "创建成功");
+                    }
+                    return clone;
+                },
+                (GameObject g) => {
+                    Debug.Log (g.name);
+                    g.transform.parent = null;
+                    g.GetComponent<RectTransform> ().anchoredPosition = Vector3.zero;
+                    g.SetActive (false);
+                },
+                1);
+            //从对象池中获取对象
+            GameObject go = simpleObjectPool.Allocate ();
+            return go;
+        }
 
         public static RectTransform NewUIGameObject (string name, GameObject parent = null) {
             SimpleObjectPool<GameObject> simpleObjectPool = new SimpleObjectPool<GameObject> (

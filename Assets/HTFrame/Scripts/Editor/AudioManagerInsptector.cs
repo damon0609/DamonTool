@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [GitHubURL ("https://github.com/")]
-[CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.jpg")]
+[CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.png")]
 [CustomEditor (typeof (AudioManager))]
 public class AudioManagerInsptector : HTBaseEditor<AudioManager> {
     private AudioManager audioManager;
@@ -12,7 +12,6 @@ public class AudioManagerInsptector : HTBaseEditor<AudioManager> {
     protected override void OnDefaultEnable () {
         base.OnDefaultEnable ();
         audioManager = e as AudioManager;
-
     }
 
     protected override void OnDefaultInspectorGUI () {

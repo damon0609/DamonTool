@@ -20,6 +20,7 @@ namespace Damon.EditorTool {
             public float FloatField (string label, float value) {
                 return EditorGUILayout.FloatField (label, value);
             }
+            
         }
     }
 

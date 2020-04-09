@@ -6,7 +6,7 @@ using LitJson;
 using UnityEngine;
 
 [InternalModule (HTFrameworkModuleType.DateSet)]
-public class DateSetManager : InternalBaseModule, ILog {
+public class DateSetManager : InternalBaseModule {
     private Dictionary<Type, List<BaseDateSet>> mDateSet = new Dictionary<Type, List<BaseDateSet>> ();
 
     #region 功能函数
@@ -129,7 +129,7 @@ public class DateSetManager : InternalBaseModule, ILog {
         foreach (Type t in list) {
             if (t.IsSubclassOf (typeof (BaseDateSet))) {
                 mDateSet.Add (t, new List<BaseDateSet> ());
-                this.d ("damon", t.FullName);
+                this.d ("damon", t.FullName,false);
             }
         }
     }

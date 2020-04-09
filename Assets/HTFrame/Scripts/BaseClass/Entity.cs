@@ -1,26 +1,62 @@
-using UnityEngine;
 using Damon.Tool;
-[EntityInfo ("assetBundle", "assetPath", "resPath")]
-public class Entity : IReference,ILog {
+using UnityEngine;
 
-    private string assetBundleName;
-    private string assetPath;
-    private string resPath;
+[EntityInfo ("1", "2", "3")]
+public class EntityNPC : Entity {
+    public EntityNPC () : base () { }
+    public override void OnAwake () {
+        this.d ("OnAwake", assetPath + "--" + assetBundleName + "--" + resPath);
+        this.d ("OnAwake", "------EntityNPC");
+    }
+    public override void OnStart () {
+
+    }
+    public override void OnUpdate () {
+
+    }
+    public override void Reset () { }
+    public override void OnDestroy () {
+
+    }
+}
+
+[EntityInfo ("4", "5", "6")]
+public class EntityMonster : Entity {
+    public EntityMonster () : base () { }
+    public override void OnAwake () {
+        this.d ("OnAwake", assetPath + "--" + assetBundleName + "--" + resPath);
+        this.d ("OnAwake", "------EntityMonster");
+    }
+    public override void OnStart () {
+
+    }
+    public override void OnUpdate () {
+
+    }
+    public override void Reset () { }
+
+    public override void OnDestroy () {
+
+    }
+}
+public class Entity : IReference, ILog {
+
+    protected string assetBundleName;
+    protected string assetPath;
+    protected string resPath;
+
+    public override string ToString () {
+        return string.Format ("a=={0},b=={1},c=={2}", assetBundleName, assetPath, resPath);
+    }
     public Entity () {
-
-        System.Object[] attributes = this.GetType().GetCustomAttributes(true);
-        for(int i=0;i<attributes.Length;i++)
-        {
+        System.Object[] attributes = this.GetType ().GetCustomAttributes (true);
+        for (int i = 0; i < attributes.Length; i++) {
             EntityInfoAttribute a = attributes[i] as EntityInfoAttribute;
             assetBundleName = a.assetBundleName;
             assetPath = a.assetPath;
             resPath = a.resourcePath;
         }
-        this.d("damon",assetBundleName);
-        this.d("damon",assetPath);
-        this.d("damon",resPath);
     }
-
     public string name;
     public GameObject gameObject;
 
@@ -32,22 +68,23 @@ public class Entity : IReference,ILog {
     }
     #region  生命周期
 
-    public void OnDestroy () {
-
+    public virtual void OnDestroy () {
+        gameObject.DestroySelf ();
     }
-    public void OnAwake () {
-
-    }
-
-    public void OnStart () {
+    public virtual void OnAwake () {
 
     }
 
-    public void OnUpdate () {
+    public virtual void OnStart () {
 
     }
 
+    public virtual void OnUpdate () {
+
+    }
     #endregion
 
-    public void Reset () { }
+    public virtual void Reset () { 
+        
+    }
 }

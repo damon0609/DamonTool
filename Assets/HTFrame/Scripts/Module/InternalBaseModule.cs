@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Damon.Tool;
 using UnityEngine;
-
 public class InternalBaseModule : MonoBehaviour, IModule {
     protected InternalModuleAttribute attribute;
-
     private bool mIsPause = false;
     public bool isPause {
         get { return mIsPause; }
@@ -27,6 +26,7 @@ public class InternalBaseModule : MonoBehaviour, IModule {
             if (typeof (InternalModuleAttribute) == objs[i].GetType ()) {
                 attribute = (InternalModuleAttribute) (objs[i]);
                 mModuleType = attribute.moduleType;
+                this.d ("damon", moduleType.ToString (),false);
             }
         }
     }
@@ -38,9 +38,8 @@ public class InternalBaseModule : MonoBehaviour, IModule {
     public virtual void OnPreparatory () {
 
     }
-
     public virtual void OnRefresh () {
-
+        this.d ("damon", "OnRefresh",false);
     }
 
     public virtual void OnResume () {

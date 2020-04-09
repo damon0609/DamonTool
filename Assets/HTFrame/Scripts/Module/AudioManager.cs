@@ -24,7 +24,6 @@ public class AudioManager : InternalBaseModule {
 
     public override void OnPreparatory () {
         base.OnPreparatory ();
-        Debug.Log ("audio preparatory");
     }
 
     public override void OnRefresh () {

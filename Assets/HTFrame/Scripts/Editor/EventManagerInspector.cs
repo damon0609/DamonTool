@@ -1,9 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 namespace HT {
-
     [GitHubURL ("https://github.com/")]
-    [CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.jpg")]
+    [CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.png")]
     [CustomEditor (typeof (EventManager))]
     public class EventManagerInspector : HTBaseEditor<EventManager> {
         private EventManager eventManager;

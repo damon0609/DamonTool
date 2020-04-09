@@ -66,7 +66,7 @@ public abstract class HTBaseEditor<T> : Editor where T : UnityEngine.Object {
             } else if (type == typeof (GitHubURLAttribute)) {
                 GitHubURLAttribute git = (GitHubURLAttribute) obj;
                 gitURL = git.url;
-                gitIcon = AssetDatabase.LoadAssetAtPath<Texture> ("Assets/HTFrame/Assets/Texture/01.jpg");
+                gitIcon = AssetDatabase.LoadAssetAtPath<Texture> ("Assets/HTFrame/Assets/Texture/01.png");
             }
         }
         OnDefaultEnable ();

@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using HT;
 using UnityEditor;
 using UnityEngine;
 
+[CustomEditor (typeof (EntityManager))]
 [GitHubURL ("https://github.com/")]
 [CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.png")]
-[CustomEditor (typeof (DateSetManager))]
-public class DateSetManagerInspector : HTBaseEditor<DateSetManager> {
-    private DateSetManager dateSetManager;
+public class EntityManagerInspector : HTBaseEditor<EntityManager> {
+    private EntityManager dateSetManager;
 
     protected override void OnDefaultEnable () {
         base.OnDefaultEnable ();
-        dateSetManager = e as DateSetManager;
+        dateSetManager = e as EntityManager;
     }
 
     protected override void OnDefaultInspectorGUI () {

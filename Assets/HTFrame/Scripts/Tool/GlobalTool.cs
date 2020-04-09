@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace Damon {
     #region 无返回值委托
@@ -24,7 +25,7 @@ namespace Damon {
         public static List<Type> GetAssembleType () {
             Assembly[] assemblies = GetAllAssembles ();
             foreach (Assembly e in assemblies) {
-                Debug.Log(e.FullName+"--");
+                Debug.Log (e.FullName + "--");
                 // Type[] teyps = e.GetTypes ();
             }
             return null;
@@ -47,7 +48,63 @@ public static class GlobalTool {
         "UnityEngine.UI",
         "UnityEngine.PhysicsModule"
     };
+    #region 静态方法
 
+    public static void OnDestroy (UnityObject obj) {
+        GameObject.Destroy (obj);
+    }
+    public static void OnDestroyImmediate (UnityObject obj) {
+        GameObject.DestroyImmediate (obj);
+    }
+
+    public static void OnDestroy<T> (List<T> list) where T : UnityObject {
+        foreach (T t in list) {
+            GameObject.Destroy (t);
+        }
+        list.Clear ();
+    }
+
+    public static GameObject CloneGameObject (GameObject originGo, bool isUI = false) {
+        GameObject obj = GameObject.Instantiate (originGo);
+        obj.transform.SetParent (originGo.transform.parent);
+        if (isUI) {
+            RectTransform objRectTransform = obj.GetComponent<RectTransform> ();
+            RectTransform orignRectTransform = originGo.GetComponent<RectTransform> ();
+
+            objRectTransform.anchoredPosition3D = orignRectTransform.anchoredPosition3D;
+            objRectTransform.sizeDelta = orignRectTransform.sizeDelta;
+            objRectTransform.anchorMin = orignRectTransform.anchorMin;
+            objRectTransform.anchorMax = orignRectTransform.anchorMax;
+        } else {
+            obj.transform.localPosition = originGo.transform.localPosition;
+        }
+        obj.transform.localRotation = originGo.transform.localRotation;
+        obj.transform.localScale = originGo.transform.localScale;
+        obj.SetActive (true);
+        return obj;
+    }
+
+    public static T Clone<T> (T obj) where T : UnityObject {
+        return GameObject.Instantiate<T> (obj);
+    }
+
+    public static T Clone<T> (T obj, Vector3 pos, Quaternion rotation) where T : UnityObject {
+        return GameObject.Instantiate<T> (obj, pos, rotation);
+    }
+
+    public static T Clone<T> (T obj, Vector3 pos, Quaternion ratation, Transform parent) where T : UnityObject {
+        return GameObject.Instantiate<T> (obj, pos, ratation, parent);
+    }
+
+    public static T Clone<T> (T obj, Transform parent) where T : UnityObject {
+        return GameObject.Instantiate<T> (obj, parent);
+    }
+
+    public static T Clone<T> (T obj, Transform parent, bool worldPositionStays) where T : UnityObject {
+        return GameObject.Instantiate<T> (obj, parent, worldPositionStays);
+    }
+
+    #endregion
     public static Dictionary<string, Type[]> types = new Dictionary<string, Type[]> (); //根据程序集的来存储类
     public static void GetRuntimeType () {
         Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies (); //获取程序域中的所有程序集
