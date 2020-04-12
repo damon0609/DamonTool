@@ -28,14 +28,6 @@ public class ZTestHT : MonoBehaviour, ILog {
             this.d("damon",e.GetType().ToString());
 
         });
-
-        ReferencePool pool = Main.referencePoolManager.GetReference (typeof (EntityNPC));
-        EntityNPC npc = pool.OnSpawn (typeof (EntityNPC)) as EntityNPC;
-
-        EntityCreateEvent re = Main.referencePoolManager.GetReference (typeof (EntityCreateEvent)).OnSpawn (typeof (EntityCreateEvent)) as EntityCreateEvent;
-        re.Fill (npc);
-
-        Main.eventManager.Trigger (this, re);
     }
 
 

@@ -1,6 +1,6 @@
 using Damon.Tool;
 using UnityEngine;
-
+using HT;
 [EntityInfo ("1", "2", "3")]
 public class EntityNPC : Entity {
     public EntityNPC () : base () { }

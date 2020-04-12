@@ -1,4 +1,7 @@
 using Damon.Tool;
-public interface IReference: ILog {
-    void Reset ();
+
+namespace HT {
+    public interface IReference : ILog {
+        void Reset ();
+    }
 }

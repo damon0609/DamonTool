@@ -8,6 +8,16 @@ namespace HT {
   [InternalModule (HTFrameworkModuleType.Entity)]
   public class EntityManager : InternalBaseModule {
 
+    //实体对象的名称
+    [SerializeField]
+    private List<string> defineEntityNames = new List<string> ();
+
+    //每个实体对象对应的游戏对象
+    [SerializeField]
+    private List<GameObject> defineEntityGos = new List<GameObject> ();
+
+    //根据类型名称存储对应的游戏对象
+    private Dictionary<string, GameObject> mDefineEntity = new Dictionary<string, GameObject> ();
     private Transform mEntityRoot;
 
     //存放各个实体类的组
@@ -34,17 +44,19 @@ namespace HT {
     }
 
     private void ExecuteCreateEntity (Type type, string entityName = "", DAction<float> loadingAction = null, DAction<Entity> loadDoneAction = null) {
-      ReferencePool pool = Main.referencePoolManager.GetReference (type);
-      Entity entity = pool.OnSpawn (typeof (Entity)) as Entity;
+      IReference pool = Main.referencePoolManager.OnSpawn (type);
+      Entity entity = pool as Entity;
       if (mEntities.ContainsKey (type)) {
         mEntities[type].Add (entity);
-        entity.gameObject = mObjectPool[type].Dequeue ();
+        if (mObjectPool[type].Count > 0) {
+          entity.gameObject = mObjectPool[type].Dequeue ();
+        } else {
+
+        }
         entity.name = (entityName == "" ? type.Name : entityName);
         entity.OnAwake ();
         entity.active = true;
         entity.OnStart ();
-        
-
       } else {
 
       }
@@ -104,14 +116,13 @@ namespace HT {
           e.OnDestroy ();
         }
       }
-      mEntities.Clear();
+      mEntities.Clear ();
 
-      mObjectPool.Clear();
-      foreach(GameObject go in mEntityGroup.Values)
-      {
-          go.DestroySelf();
+      mObjectPool.Clear ();
+      foreach (GameObject go in mEntityGroup.Values) {
+        go.DestroySelf ();
       }
-      mEntityGroup.Clear();
+      mEntityGroup.Clear ();
     }
     #endregion
   }

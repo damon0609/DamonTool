@@ -1,7 +1,12 @@
 
 using System;
 using UnityEditor;
-public class HTMenuTool
+public class EditorUtils
 {
-     
+     public static class Styles
+     {
+         public const string Box = "Box";
+         
+         
+     }
 }
