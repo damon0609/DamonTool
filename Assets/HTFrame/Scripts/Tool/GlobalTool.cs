@@ -127,6 +127,16 @@ public static class GlobalTool {
         return list;
     }
 
+    //从指定程序集中到指定类
+    public static List<T> GetRuntimeTypes<T> () where T : class {
+        List<Type> list = GetRuntimeTypes ();
+        List<T> temp = new List<T> ();
+        foreach (Type t in list) {
+            
+        }
+        return temp;
+    }
+
     public static List<TOutput> ConvertAS<TOutput, TInput> (this List<TInput> array) where TOutput : class where TInput : class {
         if (array == null && array.Count == 0) return null;
 

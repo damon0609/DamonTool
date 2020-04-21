@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Damon.Tool;
 using HT;
 using UnityEngine;
 public enum HTFrameworkModuleType {
@@ -30,7 +32,7 @@ public enum HTFrameworkModuleType {
 
 }
 
-public sealed partial class Main : MonoBehaviour {
+public sealed partial class Main : MonoBehaviour, ILog {
 
     private Dictionary<HTFrameworkModuleType, InternalBaseModule> mModules = new Dictionary<HTFrameworkModuleType, InternalBaseModule> ();
 
@@ -43,8 +45,9 @@ public sealed partial class Main : MonoBehaviour {
     public static ObjectPoolManager objectPoolManager;
     public static ReferencePoolManager referencePoolManager;
 
-    private void InitModule () {
+    public static InputManager inputManager;
 
+    private void InitModule () {
         InternalBaseModule[] modules = transform.GetComponentsInChildren<InternalBaseModule> (true);
         for (int i = 0; i < modules.Length; i++) {
             InternalBaseModule baseModule = modules[i];
@@ -57,7 +60,7 @@ public sealed partial class Main : MonoBehaviour {
         entityManager = mModules[HTFrameworkModuleType.Entity] as EntityManager;
         objectPoolManager = mModules[HTFrameworkModuleType.ObjectPool] as ObjectPoolManager;
         referencePoolManager = mModules[HTFrameworkModuleType.ReferencePool] as ReferencePoolManager;
-
+        inputManager = mModules[HTFrameworkModuleType.Input] as InputManager;
     }
 
     private void PreparatoryModule () {
@@ -76,12 +79,11 @@ public sealed partial class Main : MonoBehaviour {
         }
     }
 
-    private void OnTermination()
-    {
-         foreach (InternalBaseModule baseModule in mModules.Values) {
+    private void OnTermination () {
+        foreach (InternalBaseModule baseModule in mModules.Values) {
             if (baseModule.isPause)
                 continue;
-            baseModule.OnTermination();
+            baseModule.OnTermination ();
         }
     }
 }

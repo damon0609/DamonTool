@@ -19,14 +19,11 @@ public class ZTestHT : MonoBehaviour, ILog {
         entity = new Entity ();
         Main.eventManager.Register (typeof (LoginEvent), (System.Object obj, BaseEvent e) => {
             LoginEvent login = e as LoginEvent;
-            Debug.Log (login.ToString ());
         });
 
         Main.eventManager.Register(typeof (EntityCreateEvent),(object o,BaseEvent e) =>{
-
             this.d("damon",o.GetType().ToString());
             this.d("damon",e.GetType().ToString());
-
         });
     }
 
@@ -48,6 +45,10 @@ public class ZTestHT : MonoBehaviour, ILog {
             npc01 = null;
         }
 
+        if(Main.inputManager.GetButtonDown("Mouseleft"))
+        {
+            Debug.Log("---------------------");
+        }
     }
     void OnDestroy () {
         Main.eventManager.UnRegister<LoginEvent> ();

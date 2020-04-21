@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Damon.Tool.Events {
+
     public class EventDispatcher {
         private Dictionary<int, Listener> mRegisterListeners = new Dictionary<int, Listener> ();
         private Dictionary<string, List<int>> mRegisterListenerEvents = new Dictionary<string, List<int>> (); //支持同一事件名下多委托函数的调用

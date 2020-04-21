@@ -8,6 +8,9 @@ namespace HT {
   [InternalModule (HTFrameworkModuleType.Entity)]
   public class EntityManager : InternalBaseModule {
 
+    [SerializeField]
+    private bool isInit = false;
+
     //实体对象的名称
     [SerializeField]
     private List<string> defineEntityNames = new List<string> ();

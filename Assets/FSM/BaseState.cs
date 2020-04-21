@@ -6,7 +6,7 @@ namespace Damon.FSM {
     public enum StateType {
         Idle,
         Run,
-        Attack,
+        Attack,     
         Damage,
         Dead,
     }

@@ -16,6 +16,7 @@ public sealed partial class Main : MonoBehaviour {
         DontDestroyOnLoad (gameObject);
         instance = this;
         InitModule ();
+
     }
     void Start () {
         PreparatoryModule ();
