@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HT;
 using UnityEditor;
 using UnityEngine;
+using Damon;
 [CustomEditor (typeof (EntityManager))]
 [GitHubURL ("https://github.com/")]
 [CSDNURL ("https://passport.csdn.net/login?code=public", "Assets/HTFrame/Assets/Texture/02.png")]

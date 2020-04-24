@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Damon.Tool;
 using LitJson;
 using UnityEngine;
+using Damon;
 
 [InternalModule (HTFrameworkModuleType.DateSet)]
 public class DateSetManager : InternalBaseModule {

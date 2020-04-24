@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Damon.EditorTool;
 using UnityEditor;
 using UnityEngine;
 public class MenuTool {
+
+    [MenuItem("Tool/Remove Empty Folder")]
+    public static void RemoveEmptyFolder()
+    {
+        EditorTool.RemoveEmptyFolder();
+    }
+
     [MenuItem ("Tool/BuildAssetBundle/Clear Unused Label")]
     public static void ClearAssetBundleLabel () {
         string[] strs = AssetDatabase.GetUnusedAssetBundleNames ();
