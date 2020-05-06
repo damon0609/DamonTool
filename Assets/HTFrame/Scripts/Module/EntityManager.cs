@@ -32,36 +32,74 @@ namespace HT {
     //管理实体类的游戏对象
     private Dictionary<Type, Queue<GameObject>> mObjectPool = new Dictionary<Type, Queue<GameObject>> ();
 
-    #region  创建实体
-
+    #region  程序中动态创建实体
     public void CreateEntity (Type type, string entityName, DAction<float> loadingAction = null, DAction<Entity> loadDoneAction = null) {
-      if (mEntities.ContainsKey (type)) {
+      Entity temp = null;
+      if (mEntities.ContainsKey (type)) {//字典中包含该类
         List<Entity> list = mEntities[type];
-
-      } else {
+        if (list.Count > 0) { 
+          temp = list[list.Count - 1];
+          temp.Reset ();
+        } else {
+          Entity entity = Activator.CreateInstance<Entity> ();
+          mEntities[type].Add (entity);
+        }
+      } else {//字典中不包含此类
         List<Entity> list = new List<Entity> ();
         Entity entity = Activator.CreateInstance<Entity> ();
         list.Add (entity);
         mEntities[type] = list;
+        temp = entity;
+      }
+      if (loadDoneAction != null) {
+        loadDoneAction (temp);
       }
     }
-
     private void ExecuteCreateEntity (Type type, string entityName = "", DAction<float> loadingAction = null, DAction<Entity> loadDoneAction = null) {
-      IReference pool = Main.referencePoolManager.OnSpawn (type);
-      Entity entity = pool as Entity;
-      if (mEntities.ContainsKey (type)) {
-        mEntities[type].Add (entity);
-        if (mObjectPool[type].Count > 0) {
-          entity.gameObject = mObjectPool[type].Dequeue ();
-        } else {
+      EntityInfoAttribute att = (EntityInfoAttribute) type.GetCustomAttributes (false) [0];
+      if (att == null) {
+        this.e ("damon", "资源信息未添加");
+        return;
+      }
+
+      //取回一个实体对象并且进行初始化
+      Entity entity = (Entity) Main.referencePoolManager.OnSpawn (type);
+      GameObject go = null;
+      entity.Reset ();
+      string typeName = type.GetType().FullName;
+      if (mEntities.ContainsKey (type))
+      {
+        if (att.isUseObject) {
+          if (mObjectPool.Count > 0) {
+            go = mObjectPool[type].Dequeue ();
+          } else {
+
+          }
+        } 
+        else 
+        {
+          if(mDefineEntity.ContainsKey(typeName)&&(mDefineEntity.ContainsKey(typeName)!=null))
+          {
+            GameObject prefab = mDefineEntity[typeName];
+            go = Instantiate(prefab);
+            go.SetParent(mEntityGroup[type]);
+            entity.gameObject = go;
+          }
+          else
+          {
+              //需要将游戏对象加载到容器中
+          }
 
         }
+        go.SetParent (mEntityGroup[type]);
+        entity.gameObject = go;
+        mEntities[type].Add(entity);
         entity.name = (entityName == "" ? type.Name : entityName);
         entity.OnAwake ();
         entity.active = true;
         entity.OnStart ();
-      } else {
-
+      } else { //这里字典中包含该类型
+        this.e ("damon", "不是指定的类型");
       }
     }
 
@@ -71,22 +109,34 @@ namespace HT {
     public override void OnInitialization () {
       base.OnInitialization ();
       mEntityRoot = GameObject.Find ("EntityRoot").transform;
+
+      for (int i = 0; i < defineEntityNames.Count; i++) {
+        if (!mDefineEntity.ContainsKey (defineEntityNames[i])) {
+          mDefineEntity.Add (defineEntityNames[i], defineEntityGos[i]);
+        }
+      }
+
+      //初始化相关的数据 并且将指定的类型均已添加到实体字典中
       List<Type> types = GlobalTool.GetRuntimeTypes ();
       foreach (Type t in types) {
         if (!t.IsSubclassOf (typeof (Entity)))
           continue;
         System.Object[] objs = t.GetCustomAttributes (true);
-        if (objs != null && objs.Length > 0) {
+        EntityInfoAttribute att = objs[0] as EntityInfoAttribute;
+        if (att != null) {
           mEntities.Add (t, new List<Entity> ());
+
+          //对放实体对象的容器
           GameObject group = GameObjectTool.NewGameObject (t.Name + "_[Group]", mEntityRoot.gameObject);
           mEntityGroup[t] = group;
 
           //按照实体的类型将队列初始化
           mObjectPool[t] = new Queue<GameObject> ();
           this.d ("+++++", "添加实体类型" + t.GetType (), false);
+        } else {
+          this.e ("damon", "未定义实体资源属性");
         }
       }
-
       //实体的生命周期
       foreach (List<Entity> list in mEntities.Values) {
         foreach (Entity e in list) {

@@ -45,6 +45,8 @@ public sealed partial class Main : MonoBehaviour, ILog {
     public static ObjectPoolManager objectPoolManager;
     public static ReferencePoolManager referencePoolManager;
 
+    public static ResourcesManager resourceManager;
+
     public static InputManager inputManager;
 
     private void InitModule () {
@@ -54,6 +56,7 @@ public sealed partial class Main : MonoBehaviour, ILog {
             baseModule.OnInitialization ();
             mModules[baseModule.moduleType] = baseModule;
         }
+        resourceManager = mModules[HTFrameworkModuleType.Resource] as ResourcesManager;
         audioManager = mModules[HTFrameworkModuleType.Audio] as AudioManager;
         dateManager = mModules[HTFrameworkModuleType.DateSet] as DateSetManager;
         eventManager = mModules[HTFrameworkModuleType.Event] as EventManager;

@@ -1,7 +1,7 @@
 using Damon.Tool;
 using UnityEngine;
 using HT;
-[EntityInfo ("1", "2", "3")]
+[EntityInfo ("1", "2", "3",true)]
 public class EntityNPC : Entity {
     public EntityNPC () : base () { }
     public override void OnAwake () {
@@ -20,7 +20,7 @@ public class EntityNPC : Entity {
     }
 }
 
-[EntityInfo ("4", "5", "6")]
+[EntityInfo ("4", "5", "6",true)]
 public class EntityMonster : Entity {
     public EntityMonster () : base () { }
     public override void OnAwake () {
@@ -39,7 +39,7 @@ public class EntityMonster : Entity {
 
     }
 }
-public class Entity : IReference, ILog {
+public class Entity : IReference {
 
     protected string assetBundleName;
     protected string assetPath;
