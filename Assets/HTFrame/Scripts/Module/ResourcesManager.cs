@@ -10,22 +10,24 @@ public class ResourcesManager : InternalBaseModule
 {
     private WaitUntil waitUnitl;
     private bool isLoading = false;
-    private string assetBundleRootPath = "";
-    private ResourcesMode resourcesMode;
+    private string assetBundleRootPath = "file:///C:/Users/damon.cheng/Desktop/AssetBundles/";
+    public ResourcesMode resourcesMode = ResourcesMode.AssetBundle;
     private AssetBundleManifest assetBundleManifest;
-    private string assetBundleManifestName;
+    private string assetBundleManifestName = "models";
     private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle>();
     private Dictionary<string, Hash128> hashDic = new Dictionary<string, Hash128>();
     private bool isCahce = true;
 
-
     public IEnumerator LoadAssetAsync(BaseResourcesInfo resInfo, Action<float> loadingProcess, Action<UnityEngine.Object> loadedSuccess)
     {
         DateTime beginTime = DateTime.Now;
-        if (isLoading)
-            yield return waitUnitl;
-        isLoading = true;
+        // if (isLoading)
+        //     yield return waitUnitl;
+        // isLoading = true;
+
+        //先加载依赖项
         yield return Main.instance.StartCoroutine(LoadDependenciesAssetBundleAsync(resInfo.assetBundleName));
+
         DateTime loadedTime = DateTime.Now;
         UnityEngine.Object asset = null;
         if (resourcesMode == ResourcesMode.Resources)
@@ -48,7 +50,9 @@ public class ResourcesManager : InternalBaseModule
                 if (loadingProcess != null)
                     loadingProcess.Invoke(1);
                 yield return null;
-                asset = assetBundles[resInfo.assetBundleName].LoadAsset(resInfo.assetPath);
+
+                this.d("LoadAssetAsync", assetBundles[resInfo.assetBundleName] == null);
+                // asset = assetBundles[resInfo.assetBundleName].LoadAsset(resInfo.assetPath);
             }
             else
             {
@@ -70,8 +74,7 @@ public class ResourcesManager : InternalBaseModule
                         if (assetBundle != null)
                         {
                             asset = assetBundle.LoadAsset<UnityEngine.Object>(resInfo.assetPath);
-
-
+                            this.d("damon", "----");
                         }
                         if (isCahce)
                         {
@@ -95,12 +98,12 @@ public class ResourcesManager : InternalBaseModule
         yield return null;
     }
 
-
-    //加载依赖项
+    //加载依赖项先加载AssetBunldeManifest 
     public IEnumerator LoadDependenciesAssetBundleAsync(string assetBundleName)
     {
         if (resourcesMode == ResourcesMode.AssetBundle)
         {
+            //通过Manifest获取加载的依赖项
             yield return Main.instance.StartCoroutine(LoadAssetBundleManifestAsync());//加载配置文件
             if (assetBundleManifest)
             {
@@ -108,12 +111,9 @@ public class ResourcesManager : InternalBaseModule
                 foreach (string name in dependencies)
                 {
                     if (assetBundles.ContainsKey(name))
-                    {
                         continue;
-                    }
                     yield return Main.instance.StartCoroutine(LoadAssetBundleAsync(name));
                 }
-
             }
             else if (resourcesMode == ResourcesMode.Resources)
             {
@@ -127,7 +127,6 @@ public class ResourcesManager : InternalBaseModule
     {
         if (string.IsNullOrEmpty(assetBundleManifestName) || assetBundleManifestName == " ")
         {
-
             this.d("damon", "请提供ab配置表的清单");
             yield return null;
         }
@@ -142,7 +141,6 @@ public class ResourcesManager : InternalBaseModule
                     UnLoadAsset(assetBundleManifestName);
                 }
             }
-
         }
     }
 
@@ -162,6 +160,7 @@ public class ResourcesManager : InternalBaseModule
                     if (assetBundle)
                     {
                         assetBundles[name] = assetBundle;
+                        this.d("LoadAssetBundleAsync", name + "--" + assetBundle.GetAllAssetNames().Length);
                     }
                     else
                     {
@@ -170,8 +169,9 @@ public class ResourcesManager : InternalBaseModule
                 }
                 else
                 {
-                    this.d("damon", "加载时网络出错");
+                    this.d("LoadAssetBundleAsync", "加载时网络出错");
                 }
+                // this.d("LoadAssetBundleAsync", assetBundleRootPath + name);
             }
         }
 
@@ -216,8 +216,7 @@ public class ResourcesManager : InternalBaseModule
     #region  Unity Events
     public override void OnInitialization()
     {
-        this.d("damon", "----");
-        assetBundleRootPath = Application.streamingAssetsPath + "/";
+        //assetBundleRootPath = Application.streamingAssetsPath + "/";
         waitUnitl = new WaitUntil(() => { return !isLoading; });
     }
     public override void OnPause()

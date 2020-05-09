@@ -10,7 +10,6 @@ namespace Damon.Tool {
         public static void OnDrawRect () {
 
         }
-
         public static void AddQuad (List<Vector3> verts, List<int> indexes, Vector3 xAxis, Vector3 yAxis, Vector3 zAxis) {
 
             indexes.Add (verts.Count + 0);

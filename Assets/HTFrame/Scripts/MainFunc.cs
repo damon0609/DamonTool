@@ -44,9 +44,7 @@ public sealed partial class Main : MonoBehaviour, ILog {
     public static EntityManager entityManager;
     public static ObjectPoolManager objectPoolManager;
     public static ReferencePoolManager referencePoolManager;
-
     public static ResourcesManager resourceManager;
-
     public static InputManager inputManager;
 
     private void InitModule () {
