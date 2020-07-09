@@ -54,6 +54,7 @@ public class EntityManagerInspector : HTBaseEditor<EntityManager> {
         GUILayout.Label ("Entity:");
 
         EntityItem ();
+
         GUILayout.BeginHorizontal ();
         if (GUILayout.Button ("New", EditorStyles.miniButton)) {
             entitesInfo.Add (new EntityInfo { typeName = "<None>", entity = null });

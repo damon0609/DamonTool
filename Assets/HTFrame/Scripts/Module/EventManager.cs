@@ -5,6 +5,9 @@
  using Damon;
  namespace HT {
 
+    /// <summary>
+    /// 按照事件类型将事件存储在字典中，通过名称调用字典中的委托函数
+    /// </summary>
      [InternalModule (HTFrameworkModuleType.Event)]
      public class EventManager : InternalBaseModule {
 

@@ -28,6 +28,8 @@ public sealed partial class Main : MonoBehaviour {
         }
         ModuleUpdate ();
     }
+
+   
     private void OnDestroy () {
         OnTermination ();
     }

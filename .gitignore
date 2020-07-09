@@ -1,0 +1,8 @@
+##ignore this file##
+/target/ 
+*.meta
+
+
+ ##filter databfile¡¢sln file##
+ *.exe
+ *.sln

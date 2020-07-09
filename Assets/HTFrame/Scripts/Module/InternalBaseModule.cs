@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using Damon.Tool;
 using UnityEngine;
+
+
 public class InternalBaseModule : MonoBehaviour, IModule {
     protected InternalModuleAttribute attribute;
     private bool mIsPause = false;

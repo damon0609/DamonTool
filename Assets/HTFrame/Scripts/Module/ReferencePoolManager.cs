@@ -54,9 +54,9 @@ namespace HT {
       return referencePool.OnSpawn (type);
     }
 
-    public T OnSpwn<T> (T type) where T : class, IReference, new () {
+    public T OnSpwn<T> () where T : class, IReference, new () {
       T t = default (T);
-      Type temp = type.GetType ();
+      Type temp = typeof(T);
       if (mReferencePools.ContainsKey (temp)) {
         t = (mReferencePools[temp].OnSpawn (temp)) as T;
       } else {

@@ -1,35 +1,86 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Damon;
 using Damon.Tool;
 using HT;
 using LitJson;
 using UnityEngine;
-public class ZTestHT : MonoBehaviour, ILog {
+public class ZTestHT : MonoBehaviour, ILog
+{
 
     private Entity entity;
-
     public GameObject prefab;
-    ReferencePool referencePool = new ReferencePool ();
-
+    ReferencePool referencePool = new ReferencePool();
     private EntityNPC npc01;
-
     public class TankResInfo : BaseResourcesInfo
     {
         public TankResInfo(string assetBundleName, string assetPath, string resPath) : base(assetBundleName, assetPath, resPath)
         {
-
         }
     }
 
-    void Start () {
+    IEnumerator cor01()
+    {
+        yield return YieldInstrucioner.GetWaitForSeconds(1.0f);
+        Debug.Log("cor01");
+    }
+    CoroutineAction<float> cor03;
+    IEnumerator Print(float count)
+    {
+        yield return YieldInstrucioner.GetWaitForSeconds(3.0f);
+        Debug.Log(count);
+    }
 
-        TankResInfo resInfo = new TankResInfo("models", "Assets/Tanks/Assets/Models/Radar.fbx", "");
-        StartCoroutine(Main.resourceManager.LoadAssetAsync(resInfo, null,obj=> {
+    IEnumerator PrintAction(DAction action)
+    {
+        yield return YieldInstrucioner.GetWaitUntil(() => { return true; });
+        if (action != null)
+            action();
+    }
 
-            //GameObject go = Instantiate<GameObject>((obj as UnityEngine.Object));
-            this.d("damon","---");
-        }));
+    IEnumerator PrintAction(string arg1, string arg2)
+    {
+        yield return YieldInstrucioner.GetWaitUntil(() => { return true; });
+    }
+
+    IEnumerator PrintAction(float arg1, float arg2)
+    {
+        yield return YieldInstrucioner.GetWaitUntil(() =>
+        {
+            return arg1 > arg2;
+        });
+    }
+
+    void Start()
+    {
+
+        cor03 = Print;
+
+        string id1 = Main.coroutiner.Run(cor01);
+        string id2 = Main.coroutiner.Run<float>(cor03, 1);
+
+
+        string id3 = Main.coroutiner.Run<DAction>(PrintAction, () =>
+        {
+            //Debug.Log("ni hao");
+        });
+        Main.coroutiner.Run<DAction>(PrintAction, () =>
+        {
+            //Debug.Log("ni hao damon");
+        });
+
+        Main.coroutiner.Run<string, string>(PrintAction, "a", "b");
+        Main.coroutiner.Run<float, float>(PrintAction, 1, 2);
+
+
+
+        //TankResInfo resInfo = new TankResInfo("models", "Assets/Tanks/Assets/Models/Radar.fbx", "");
+        //StartCoroutine(Main.resourceManager.LoadAssetAsync(resInfo, null,obj=> {
+
+        //    //GameObject go = Instantiate<GameObject>((obj as UnityEngine.Object));
+        //    this.d("damon","---");
+        //}));
 
         //entity = new Entity();
         //Main.eventManager.Register(typeof(LoginEvent), (System.Object obj, BaseEvent e) =>
@@ -45,7 +96,8 @@ public class ZTestHT : MonoBehaviour, ILog {
     }
 
 
-    void Update () {
+    void Update()
+    {
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
@@ -67,7 +119,8 @@ public class ZTestHT : MonoBehaviour, ILog {
         //    Debug.Log("---------------------");
         //}
     }
-    void OnDestroy () {
+    void OnDestroy()
+    {
         //Main.eventManager.UnRegister<LoginEvent> ();
     }
 }

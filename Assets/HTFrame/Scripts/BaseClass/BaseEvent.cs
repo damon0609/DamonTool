@@ -27,12 +27,12 @@ namespace HT {
     public override string ToString () {
       return string.Format ("name={0},password={1}", mName, mPassword);
     }
-
     public override void Reset () {
 
     }
   }
-  public class BaseEvent : IReference {
+    //抽象类不可实例化
+  public abstract class BaseEvent : IReference {
     public virtual void Reset () {
 
     }
