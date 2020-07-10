@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Damon;
 using Damon.Tool;
 using HT;
@@ -20,7 +21,7 @@ public class ZTestHT : MonoBehaviour, ILog
         }
     }
 
-    IEnumerator cor01()
+    public IEnumerator cor01()
     {
         yield return YieldInstrucioner.GetWaitForSeconds(1.0f);
         Debug.Log("cor01");
@@ -51,8 +52,7 @@ public class ZTestHT : MonoBehaviour, ILog
             return arg1 > arg2;
         });
     }
-
-    void Start()
+     void Start()
     {
 
         cor03 = Print;
@@ -72,8 +72,6 @@ public class ZTestHT : MonoBehaviour, ILog
 
         Main.coroutiner.Run<string, string>(PrintAction, "a", "b");
         Main.coroutiner.Run<float, float>(PrintAction, 1, 2);
-
-
 
         //TankResInfo resInfo = new TankResInfo("models", "Assets/Tanks/Assets/Models/Radar.fbx", "");
         //StartCoroutine(Main.resourceManager.LoadAssetAsync(resInfo, null,obj=> {

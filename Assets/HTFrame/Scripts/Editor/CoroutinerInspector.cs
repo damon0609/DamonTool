@@ -8,6 +8,8 @@ using HT;
 [CustomEditor(typeof(Coroutiner))]
 public class CoroutinerInspector : HTBaseEditor<CoroutinerInspector>
 {
+    TrackCoroutineWin win;
+    private bool open = false;
     protected override void OnDefaultEnable()
     {
         base.OnDefaultEnable();
@@ -22,16 +24,22 @@ public class CoroutinerInspector : HTBaseEditor<CoroutinerInspector>
 
 
         EditorGUILayout.BeginHorizontal();
+        GUI.enabled = Application.isPlaying;
         if (GUILayout.Button("Coroutiner Tracker", "LargeButton"))
         {
-            TrackCoroutineWin win = EditorWindow.GetWindow<TrackCoroutineWin>();
+            win = EditorWindow.GetWindow<TrackCoroutineWin>();
             win.titleContent = new GUIContent("TrackerCoroutine");
-            win.minSize = new Vector2(400,400);
-            win.maxSize = new Vector2(Screen.currentResolution.width,Screen.currentResolution.height);
-            win.Init((Coroutiner)target);
+            win.minSize = new Vector2(400, 400);
+            win.maxSize = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
             win.Show();
+            win.Init((Coroutiner)target);
+            open = true;
         }
         EditorGUILayout.EndHorizontal();
-
+    }
+    protected override void OnDestroy()
+    {
+        if(open)
+            win.Close();
     }
 }

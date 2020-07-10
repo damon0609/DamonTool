@@ -128,8 +128,20 @@ public abstract class HTBaseEditor<T> : Editor where T : UnityEngine.Object {
             EditorUtility.SetDirty (target);
             Component com = target as Component;
             if (com != null && com.gameObject.scene != null) {
-                EditorSceneManager.MarkSceneDirty (com.gameObject.scene);
+                EditorSceneManager.MarkSceneDirty (com.gameObject.scene);//这个方法也需要学习
             }
+        }
+    }
+
+
+    protected virtual void OnDestroy() {
+        if(Application.isPlaying)
+        {
+            Debug.Log("play");
+        }
+        else
+        {
+            Debug.Log("stop");
         }
     }
 }

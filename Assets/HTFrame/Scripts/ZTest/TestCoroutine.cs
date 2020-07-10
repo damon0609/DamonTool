@@ -19,7 +19,6 @@ public class TestCoroutine : MonoBehaviour
             action(str);
         // Main.coroutiner.Run(Test02);
     }
-
     IEnumerator Test011(Action<string> action, string str)
     {
         yield return YieldInstrucioner.GetWaitForSeconds(2);
@@ -27,44 +26,34 @@ public class TestCoroutine : MonoBehaviour
             action(str);
         // Main.coroutiner.Run(Test022);
     }
-
-
     IEnumerator Test02(string s)
     {
-        yield return YieldInstrucioner.GetWaitForSeconds(1);
-        Debug.Log(s);
+        yield return YieldInstrucioner.GetWaitForSeconds(15);
         // Main.coroutiner.Stop(id);
         // Main.coroutiner.Return(id);
     }
     IEnumerator Test022(string s)
     {
-        yield return YieldInstrucioner.GetWaitForSeconds(2);
-        Debug.Log(s);
+        yield return YieldInstrucioner.GetWaitForSeconds(1);
         // Main.coroutiner.Stop(id);
         // Main.coroutiner.Return(id);
     }
 
-    CoroutineItem coroutineItem;
+    CoroutineAction<string> delegateTest02;
+    CoroutineAction<Action<string>, string> delegateTest01;
 
-    delegate IEnumerator IEnumeratorDele(string s);
-
-    private IEnumeratorDele ieTest01;
-    private IEnumeratorDele ieTest02;
     void Start()
     {
-        ieTest01 = Test02;
-        ieTest02 = Test022;
-        coroutineItem = new CoroutineItem();
-        coroutineItem.Fill(ieTest01, new object[] { "ssss" });
-        coroutineItem.Run();
+        delegateTest01 = Test01;
+        delegateTest01 = Test011;
+        Main.coroutiner.Run<Action<string>,string>(delegateTest01,s=>{},"damon1");
+        Main.coroutiner.Run<Action<string>,string>(delegateTest01,s=>{} ,"damon2");
 
-        CoroutineItem coroutineItem01 = new CoroutineItem();
-        coroutineItem01.Fill(ieTest01, new object[] { "aaaa" });
-        coroutineItem01.Run();
-        // coroutineItem.Fill(ieTest02, null);
-        // coroutineItem.Run();
-        // Debug.Log(Main.coroutiner.Run<Action<string>, string>(Test01, str => { Debug.Log(str); }, "11111"));
-        // Debug.Log(Main.coroutiner.Run<Action<string>, string>(Test011, str => { Debug.Log(str); }, "22222"));
+        delegateTest02 = Test02;
+        delegateTest02 = Test022;
+        Main.coroutiner.Run(delegateTest02, "damon1");
+        Main.coroutiner.Run(delegateTest02, "damon2");
+
     }
     IEnumerator Test03()
     {

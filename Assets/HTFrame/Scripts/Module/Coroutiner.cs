@@ -9,9 +9,11 @@ namespace HT
     [InternalModule(HTFrameworkModuleType.Coroutiner)]
     public class Coroutiner : InternalBaseModule
     {
+        //按照名称来存储协程
         internal Dictionary<string, CoroutineEnumerator> coroutineEnumerators = new Dictionary<string, CoroutineEnumerator>();//根据id对迭代器进行分类
 
-        internal Dictionary<Delegate, List<CoroutineEnumerator>> warehouse = new Dictionary<Delegate, List<CoroutineEnumerator>>(); //根据委托类型对迭代器进行分类
+        //按照调用的委托来存储协程
+        public Dictionary<Delegate, List<CoroutineEnumerator>> warehouse = new Dictionary<Delegate, List<CoroutineEnumerator>>(); //根据委托类型对迭代器进行分类
         public override void OnTermination()
         {
             base.OnTermination();
@@ -65,7 +67,7 @@ namespace HT
             }
             else
             {
-                coroutineEnumerators[id].Return();
+                coroutineEnumerators[id].Return();//重新调用协程
             }
         }
         //停止指定id的协程
@@ -99,6 +101,7 @@ namespace HT
 
         public void ClearNotRunning()
         {
+            //将没有运行的协程添加到临时字典中
             Dictionary<string, CoroutineEnumerator> notRunning = new Dictionary<string, CoroutineEnumerator>();
             foreach (CoroutineEnumerator ci in coroutineEnumerators.Values)
             {
@@ -111,11 +114,12 @@ namespace HT
                 }
             }
 
+
             foreach (CoroutineEnumerator c in notRunning.Values)
             {
                 coroutineEnumerators.Remove(c.id);
                 Removewarehouse(c);
-                Main.referencePoolManager.OnDeSpawn(c);
+                Main.referencePoolManager.OnDeSpawn(c);//对象池进行回收
             }
             notRunning = null;
         }
@@ -126,6 +130,9 @@ namespace HT
             else
                 return coroutineEnumerators[id].state == CoroutineState.Running ? true : false;
         }
+
+
+        //按照委托的类来进行添加移除协程
         private void Addwarehouse(CoroutineEnumerator c)
         {
             if (!warehouse.ContainsKey(c.action))
@@ -194,8 +201,7 @@ namespace HT
             if (mEnumerator != null)
             {
                 mCoroutine = Main.coroutiner.StartCoroutine(this);
-                mState = CoroutineState.Running;
-
+                state = CoroutineState.Running;
 #if UNITY_EDITOR
                 StackTraceInfo = new StackTrace(true);
                 RerunNumber = 1;
@@ -237,12 +243,16 @@ namespace HT
                 {
                     case CoroutineState.Stop:
                         stopTime = DateTime.Now;
+                        elapsedTime = (stopTime - createTime).TotalSeconds;
+                        // UnityEngine.Debug.Log("stop:" + stopTime.ToString("mm:ss:fff"));
                         break;
                     case CoroutineState.Running:
                         createTime = DateTime.Now;
+                        // UnityEngine.Debug.Log("start:" + createTime.ToString("mm:ss:fff"));
                         break;
                     case CoroutineState.Finish:
-                        elapsedTime = (stopTime - createTime).TotalSeconds;
+                        elapsedTime = (DateTime.Now - createTime).TotalSeconds;
+                        // UnityEngine.Debug.Log(elapsedTime.ToString("f3"));
                         break;
                 }
             }
