@@ -14,7 +14,6 @@ public class InputManagerInspector : HTBaseEditor<InputManager> {
         base.OnDefaultEnable ();
         inputManager = e as InputManager;
     }
-
     protected override void OnDefaultInspectorGUI () {
         base.OnDefaultInspectorGUI ();
     }

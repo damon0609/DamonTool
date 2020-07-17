@@ -51,6 +51,9 @@ public sealed partial class Main : MonoBehaviour, ILog
     public static InputManager inputManager;
     public static Coroutiner coroutiner;
 
+    public static WebRequestManager webRequestManager;
+    public static NetWorkManager netWorkManager;
+
     private void InitModule()
     {
         InternalBaseModule[] modules = transform.GetComponentsInChildren<InternalBaseModule>(true);
@@ -69,6 +72,8 @@ public sealed partial class Main : MonoBehaviour, ILog
         referencePoolManager = mModules[HTFrameworkModuleType.ReferencePool] as ReferencePoolManager;
         inputManager = mModules[HTFrameworkModuleType.Input] as InputManager;
         coroutiner = mModules[HTFrameworkModuleType.Coroutiner] as Coroutiner;
+        webRequestManager = mModules[HTFrameworkModuleType.WebRequest] as WebRequestManager;
+        netWorkManager = mModules[HTFrameworkModuleType.NetWork] as NetWorkManager;
     }
 
     private void PreparatoryModule()

@@ -2,7 +2,6 @@
 
 public class HTBaseWindow : EditorWindow
 {
-
     protected bool mActiveTitle = false;
     private void OnEnable()
     {

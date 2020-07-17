@@ -1,0 +1,84 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using UnityEditorInternal;
+
+public class BuiltInResourceCtrl : EditorWindow
+{
+    private struct TextureInfo
+    {
+        public int id;
+        public Texture2D texture;
+        public string name;
+        public Vector2 size;
+        public string path;
+    }
+    private ReorderableList reorderableList;
+    private Vector2 pos;
+
+    [MenuItem("Tool/BuiltIn Resources List")]
+    static void OpenWin()
+    {
+        BuiltInResourceCtrl win = GetWindow<BuiltInResourceCtrl>(true);
+        win.titleContent = new GUIContent("BuiltInResources");
+        win.Show();
+    }
+
+    private void OnEnable()
+    {
+        List<TextureInfo> infoes = new List<TextureInfo>();
+        Texture2D[] list = Resources.FindObjectsOfTypeAll(typeof(Texture2D)) as Texture2D[];
+        for (int i = 0; i < list.Length; i++)
+        {
+            Texture2D t = list[i];
+            TextureInfo info = new TextureInfo
+            {
+                id = i,
+                name = t.name,
+                texture = t,
+                size = new Vector2(t.width, t.height),
+                path = string.IsNullOrEmpty(AssetDatabase.GetAssetPath(t)) ? "未知路径" : AssetDatabase.GetAssetPath(t)
+            };
+            infoes.Add(info);
+        }
+
+        reorderableList = new ReorderableList(infoes, typeof(Texture2D));
+        reorderableList.headerHeight = EditorGUIUtility.singleLineHeight;
+        reorderableList.elementHeight = 60;
+        reorderableList.displayAdd = reorderableList.displayRemove = false;
+        reorderableList.drawHeaderCallback += r =>
+        {
+            EditorGUI.LabelField(r, "内置资源一览表");
+        };
+        reorderableList.drawElementCallback += DrawElement;
+    }
+
+    void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+    {
+        TextureInfo item = (TextureInfo)reorderableList.list[index];
+        Rect texRect = new Rect(rect.x, rect.y + 20, 20, 20);
+        GUI.DrawTexture(texRect, item.texture);
+
+        Rect nameRect = new Rect(texRect.x + texRect.width + 5, rect.y, 200, EditorGUIUtility.singleLineHeight);
+        GUI.Label(nameRect, "Name:" + item.name);
+
+        Rect sizeRect = new Rect(texRect.x + texRect.width + 5, nameRect.y + EditorGUIUtility.singleLineHeight, 200, EditorGUIUtility.singleLineHeight);
+        GUI.Label(sizeRect, "Size:" + item.size.ToString());
+
+        Rect pathRect = new Rect(texRect.x + texRect.width + 5, sizeRect.y + EditorGUIUtility.singleLineHeight, 200, EditorGUIUtility.singleLineHeight);
+        GUI.Label(pathRect, "Path:" + item.path.ToString());
+    }
+
+    private void OnGUI()
+    {
+        Rect rect = new Rect(0, 0, position.width / 2, position.height);//窗口矩形
+        Rect viewRect = new Rect(rect.x, rect.y, rect.width, reorderableList.list.Count * 60);//视图矩形
+        pos = GUI.BeginScrollView(rect, pos,viewRect);
+        if (reorderableList != null)
+            reorderableList.DoList(viewRect);
+        GUI.EndScrollView();
+    }
+}
+
+
