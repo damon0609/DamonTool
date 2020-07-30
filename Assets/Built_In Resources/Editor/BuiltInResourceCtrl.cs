@@ -16,6 +16,9 @@ public class BuiltInResourceCtrl : EditorWindow
     }
     private ReorderableList reorderableList;
     private Vector2 pos;
+    private bool on = false;
+
+    private float horizontalRate = 0.5f;
 
     [MenuItem("Tool/BuiltIn Resources List")]
     static void OpenWin()
@@ -72,12 +75,47 @@ public class BuiltInResourceCtrl : EditorWindow
 
     private void OnGUI()
     {
-        Rect rect = new Rect(0, 0, position.width / 2, position.height);//窗口矩形
+        Rect rect = new Rect(0, 0, (int)(position.width * horizontalRate), position.height);//窗口矩形
+        HorizotalCtrl(rect, position);
         Rect viewRect = new Rect(rect.x, rect.y, rect.width, reorderableList.list.Count * 60);//视图矩形
-        pos = GUI.BeginScrollView(rect, pos,viewRect);
+        pos = GUI.BeginScrollView(rect, pos, viewRect);
         if (reorderableList != null)
             reorderableList.DoList(viewRect);
         GUI.EndScrollView();
+
+        Rect otherRect = new Rect(rect)
+        {
+            x = rect.width + rect.x,
+            width = position.width - rect.width,
+        };
+        // EditorGUI.DrawRect(otherRect,Color.gray);
+    }
+    void HorizotalCtrl(Rect preRect, Rect positon)
+    {
+        Rect rect = new Rect(preRect)
+        {
+            x = preRect.x + preRect.width - 5,
+            width = 10,
+        };
+        Event e = Event.current;
+        EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeHorizontal);
+        if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition))
+            on = true;
+
+        if (e.type == EventType.MouseUp)
+            on = false;
+
+        if (on && e.type == EventType.MouseDrag)
+        {
+            horizontalRate = e.mousePosition.x / position.width;
+            Repaint();
+        }
+
+        EditorGUI.DrawRect(rect, Color.gray);
+    }
+
+    private void Update()
+    {
     }
 }
 

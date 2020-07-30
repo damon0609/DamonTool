@@ -77,6 +77,7 @@ public class NetWorkManager : InternalBaseModule
     }
     public override void OnInitialization()
     {
+        base.OnInitialization();
         messageQueue = new Queue<INetworkMessage>();
         foreach (BaseProtocolChannel c in protocols.Values)
         {

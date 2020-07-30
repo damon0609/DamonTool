@@ -13,10 +13,11 @@ public class ResourcesManager : InternalBaseModule
     private string assetBundleRootPath = "file:///C:/Users/damon.cheng/Desktop/AssetBundles/";
     public ResourcesMode resourcesMode = ResourcesMode.AssetBundle;
     private AssetBundleManifest assetBundleManifest;
-    private string assetBundleManifestName = "models";
     private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle>();
     private Dictionary<string, Hash128> hashDic = new Dictionary<string, Hash128>();
-    private bool isCahce = true;
+    public bool isCahce = true;
+    public bool isEditorMode;
+    public string assetBundleManifestName = "models";
 
     public IEnumerator LoadAssetAsync(BaseResourcesInfo resInfo, Action<float> loadingProcess, Action<UnityEngine.Object> loadedSuccess)
     {
@@ -216,7 +217,7 @@ public class ResourcesManager : InternalBaseModule
     #region  Unity Events
     public override void OnInitialization()
     {
-        //assetBundleRootPath = Application.streamingAssetsPath + "/";
+        base.OnInitialization();
         waitUnitl = new WaitUntil(() => { return !isLoading; });
     }
     public override void OnPause()
