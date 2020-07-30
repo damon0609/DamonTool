@@ -1,8 +1,22 @@
 ##ignore this file##
 /target/ 
 *.meta
+*.csproj
+*.sln
 
-
- ##filter databfile¡¢sln file##
+ ##filter databfileï¿½ï¿½sln file##
  *.exe
  *.sln
+
+Library/*
+Packages/*
+Logs/*
+obj/*
+
+.vs/DamonTool/v15/.suo
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
+.vscode/settings.json
+.DS_Store
