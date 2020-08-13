@@ -13,20 +13,16 @@ Packages/*
 Logs/*
 obj/*
 
-.vs/DamonTool/v15/.suo
+
 *.lock
 *.ide
 *.ide-shm
 *.ide-wal
 .vscode/settings.json
 .DS_Store
-Library/AnnotationManager
+Library/
 *.dat
 *.dat
 *.sln
 *.sln
-Library/metadata/1b/1b32bcce201b4494ea8848326290c5d5
-*.info
-Library/metadata/1b/1b0dea3a5139b85488d8fae2d6e29bfa
-*.yml
-*.yml
+
