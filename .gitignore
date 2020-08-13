@@ -21,6 +21,8 @@ obj/*
 .vscode/settings.json
 .DS_Store
 Library/
+Temp/
+
 *.dat
 *.dat
 *.sln
